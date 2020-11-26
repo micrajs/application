@@ -1,0 +1,53 @@
+{
+  "name": "@micra/application",
+  "version": "0.0.9",
+  "author": "Olavo Amorim Santos<contact@micra.dev>",
+  "license": "MIT",
+  "main": "lib/sync/index.js",
+  "module": "lib/sync/index.mjs.js",
+  "types": "lib/sync/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "build": "yarn rimraf lib && yarn rollup -c .config/build/rollup.config.js && tsc --emitDeclarationOnly -p tsconfig.types.json",
+    "format": "prettier --write 'src/**/*.{ts,tsx}' --config .prettierrc.js",
+    "lint": "eslint 'src/**/*.{ts,tsx}' --cache --config .config/linting/.eslintrc.js --cache-location .config/linting/.eslintcache",
+    "test": "jest --config .config/test/jest.config.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.7",
+    "@babel/plugin-transform-react-jsx": "^7.12.7",
+    "@babel/plugin-transform-typescript": "^7.12.1",
+    "@babel/preset-env": "^7.12.7",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.9",
+    "@types/react": "^17.0.0",
+    "@types/styled-components": "^5.1.4",
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.6",
+    "prettier": "^2.2.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.33.3",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-size-snapshot": "^0.12.0",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2"
+  },
+  "peerDependencies": {
+    "@micra/multi-env": "^0.0.2"
+  },
+  "dependencies": {
+    "@micra/config": "^0.0.5",
+    "@micra/core": "^0.0.7",
+    "tslib": "^2.0.3"
+  }
+}
