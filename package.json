@@ -16,16 +16,17 @@
     "test": "jest --config .config/test/jest.config.js"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.7",
+    "@babel/core": "^7.12.9",
     "@babel/plugin-transform-react-jsx": "^7.12.7",
     "@babel/plugin-transform-typescript": "^7.12.1",
     "@babel/preset-env": "^7.12.7",
+    "@micra/core": "^0.0.8",
     "@types/jest": "^26.0.15",
-    "@types/node": "^14.14.9",
+    "@types/node": "^14.14.10",
     "@types/react": "^17.0.0",
     "@types/styled-components": "^5.1.4",
-    "@typescript-eslint/eslint-plugin": "^4.8.1",
-    "@typescript-eslint/parser": "^4.8.1",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -42,12 +43,9 @@
     "ts-node": "^9.0.0",
     "typescript": "^4.1.2"
   },
-  "peerDependencies": {
-    "@micra/multi-env": "^0.0.2"
-  },
   "dependencies": {
     "@micra/config": "^0.0.5",
-    "@micra/core": "^0.0.7",
+    "@micra/multi-env": "^0.0.2",
     "tslib": "^2.0.3"
   }
 }

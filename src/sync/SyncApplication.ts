@@ -48,11 +48,42 @@ export class Application implements ApplicationContract {
   kernel?: Kernel;
   serviceProviders: ServiceProvider[] = [];
   hasStarted = false;
+  protected initializedProviders: string[] = [];
 
   constructor() {
     this.env = new MultiEnv();
     this.config = new Config();
     this.bootstrap();
+  }
+
+  initializeProvider(provider: StaticServiceProvider) {
+    try {
+      if (!this.container) {
+        throw new Error(
+          `Service container not defined. ` +
+            `Try registering a container by using registerContainer before registering your kernel.`,
+        );
+      }
+
+      if (!this.initializedProviders.includes(provider.name)) {
+        const serviceProviderInstance = new provider(this.container as ServiceContainer);
+
+        if (serviceProviderInstance.register) {
+          serviceProviderInstance.register();
+        }
+
+        if (serviceProviderInstance.boot) {
+          serviceProviderInstance.boot();
+        }
+
+        this.serviceProviders.push(serviceProviderInstance);
+        this.initializedProviders.push(provider.name);
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(`Failed to initialize service provider "${provider.name}"`);
+      throw e;
+    }
   }
 
   registerContainer(container: StaticServiceContainer) {
@@ -93,9 +124,12 @@ export class Application implements ApplicationContract {
           `Try registering a container by using registerContainer before registering your providers.`,
       );
     }
-    providers.forEach((provider) =>
-      this.serviceProviders.push(new provider(this.container as ServiceContainer)),
-    );
+    providers.forEach((provider) => {
+      if (!this.initializedProviders.includes(provider.name)) {
+        this.serviceProviders.push(new provider(this.container as ServiceContainer));
+        this.initializedProviders.push(provider.name);
+      }
+    });
 
     return this;
   }
