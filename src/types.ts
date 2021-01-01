@@ -1,4 +1,8 @@
-import { StaticKernel, StaticServiceContainer, StaticServiceProvider } from '@micra/core';
+import {
+  StaticKernel,
+  StaticServiceContainer,
+  StaticServiceProvider,
+} from '@micra/core';
 
 export interface AppConfig {
   container?: StaticServiceContainer;

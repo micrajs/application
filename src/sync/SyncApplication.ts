@@ -15,7 +15,10 @@ import {
 
 export class Application implements ApplicationContract {
   static get global(): any {
-    if (typeof window !== 'undefined' && typeof window.document !== 'undefined') {
+    if (
+      typeof window !== 'undefined' &&
+      typeof window.document !== 'undefined'
+    ) {
       return window;
     }
 
@@ -66,7 +69,9 @@ export class Application implements ApplicationContract {
       }
 
       if (!this.initializedProviders.includes(provider.name)) {
-        const serviceProviderInstance = new provider(this.container as ServiceContainer);
+        const serviceProviderInstance = new provider(
+          this.container as ServiceContainer,
+        );
 
         if (serviceProviderInstance.register) {
           serviceProviderInstance.register();
@@ -126,7 +131,9 @@ export class Application implements ApplicationContract {
     }
     providers.forEach((provider) => {
       if (!this.initializedProviders.includes(provider.name)) {
-        this.serviceProviders.push(new provider(this.container as ServiceContainer));
+        this.serviceProviders.push(
+          new provider(this.container as ServiceContainer),
+        );
         this.initializedProviders.push(provider.name);
       }
     });
