@@ -43,9 +43,9 @@ export class Application implements ApplicationContract {
   }
 
   config: ConfigContract;
-  container?: ServiceContainer;
+  container!: ServiceContainer;
   env: Environment;
-  kernel?: Kernel;
+  kernel!: Kernel;
   serviceProviders: ServiceProvider[] = [];
   hasStarted = false;
   protected initializedProviders: string[] = [];
