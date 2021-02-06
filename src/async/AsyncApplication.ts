@@ -96,8 +96,6 @@ export class Application implements ApplicationContract {
     this.container.value('config', this.config);
     this.container.value('container', this.container);
 
-    Application.global.use = this.container.use.bind(this.container);
-
     return this;
   }
 
@@ -149,6 +147,17 @@ export class Application implements ApplicationContract {
     Application.global.env = (key: string, fallback?: any) => {
       return this.env.get(key) ?? fallback;
     };
+    // Initialize use
+    Application.global.use = (key: string) => {
+      if (!this.container) {
+        throw new Error(
+          `Service container not defined. ` +
+            `Try registering a container by using registerContainer before starting the application.`,
+        );
+      }
+
+      return this.container.use(key);
+    };
   }
 
   async start() {
@@ -199,11 +208,11 @@ export class Application implements ApplicationContract {
       }
     }
 
-    await this.kernel?.boot();
+    await this.kernel.boot();
   }
 
   async run() {
     await this.start();
-    return await this.kernel?.run();
+    return await this.kernel.run();
   }
 }

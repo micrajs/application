@@ -3,7 +3,6 @@ import { MultiEnv } from '@micra/multi-env';
 import {
   Application as ApplicationContract,
   Config as ConfigContract,
-  Environment,
   Kernel,
   ServiceContainer,
   ServiceProvider,
@@ -47,7 +46,7 @@ export class Application implements ApplicationContract {
 
   config: ConfigContract;
   container!: ServiceContainer;
-  env: Environment;
+  env: MultiEnv;
   kernel!: Kernel;
   serviceProviders: ServiceProvider[] = [];
   hasStarted = false;
@@ -96,14 +95,13 @@ export class Application implements ApplicationContract {
     this.container.value('app', this);
     this.container.value('env', this.env);
     this.container.value('config', this.config);
-
-    Application.global.use = this.container.use.bind(this.container);
+    this.container.value('container', this.container);
 
     return this;
   }
 
   async registerEnv(...envs: StaticEnvironment[]) {
-    (this.env as MultiEnv).addSources(...envs);
+    this.env.addSources(...envs);
 
     await this.env.init();
 
@@ -149,6 +147,17 @@ export class Application implements ApplicationContract {
     // Initialize env
     Application.global.env = (key: string, fallback?: any) => {
       return this.env.get(key) ?? fallback;
+    };
+    // Initialize use
+    Application.global.use = (key: string) => {
+      if (!this.container) {
+        throw new Error(
+          `Service container not defined. ` +
+            `Try registering a container by using registerContainer before starting the application.`,
+        );
+      }
+
+      return this.container.use(key);
     };
   }
 
@@ -197,13 +206,13 @@ export class Application implements ApplicationContract {
       }
     });
 
-    this.kernel?.boot();
+    this.kernel.boot();
 
     this.hasStarted = true;
   }
 
   run() {
     this.start();
-    return this.kernel?.run();
+    return this.kernel.run();
   }
 }

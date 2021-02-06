@@ -19,6 +19,6 @@
     "outDir": "lib",
     "rootDir": "src"
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "index.d.ts"],
   "exclude": ["node_modules", "**/*.test.ts", ".config/**/*"]
 }
