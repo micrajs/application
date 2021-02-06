@@ -59,6 +59,18 @@ type Env = {
 };
 
 /**
+ * Window:
+ * Extension of the global Window object.
+ * This will be available in the
+ * browser.
+ */
+interface Window {
+  config: Config;
+  env: Env;
+  use: Use;
+}
+
+/**
  * Global:
  * Extension of the global Global object.
  * This will be available in the
@@ -69,7 +81,7 @@ declare namespace NodeJS {
 
   interface Global {
     config: Config;
-    use: Use;
     env: Env;
+    use: Use;
   }
 }
