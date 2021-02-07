@@ -1335,12 +1335,27 @@
   dependencies:
     tslib "^2.0.0"
 
+"@micra/core@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@micra/core/-/core-0.0.5.tgz#b46b8634300005d7a723f63e88d247a3c36df1d1"
+  integrity sha512-NSFpVg3zIYdLlt1eDAwupS7RpUaF6t8kzt5qTBC5jbEtCcp9kYI7h+KLxMFfdl87Hdn+ktnLONiyeoR3EIYHyw==
+  dependencies:
+    tslib "^2.0.0"
+
 "@micra/core@^0.0.8":
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/@micra/core/-/core-0.0.8.tgz#b36825074f59c9031619e27e372a7497eda14c6c"
   integrity sha512-NSo0T88tMjganuDYk7ig5GoE1Oz79QrPreUGbun3VWp3p24bGAgDNdObrhZ+ijLTkvc8A8lv3caYBLTTxST/fA==
   dependencies:
     tslib "^2.0.1"
+
+"@micra/kernel@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@micra/kernel/-/kernel-0.0.3.tgz#366c82f04cf74707275c7e00e870f2a39973889b"
+  integrity sha512-LDOhE02FijGFDqJyCvA6ee0vfB7TURlwbjal7HWjsQaP2hxzfVggk4mgGEzQD7YA+xzGC+Gvg25MjxDZ7r4qBg==
+  dependencies:
+    "@micra/core" "^0.0.5"
+    tslib "^2.0.0"
 
 "@micra/multi-env@^0.0.2":
   version "0.0.2"

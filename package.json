@@ -1,6 +1,6 @@
 {
   "name": "@micra/application",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "author": "Olavo Amorim Santos<contact@micra.dev>",
   "license": "MIT",
   "main": "lib/sync/index.js",
@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "@micra/config": "^0.0.7",
+    "@micra/kernel": "^0.0.3",
     "@micra/multi-env": "^0.0.2",
     "tslib": "^2.1.0"
   }

@@ -1,9 +1,9 @@
 import { Config } from '@micra/config';
 import { MultiEnv } from '@micra/multi-env';
-import {
+import { Kernel } from '@micra/kernel';
+import type {
   Application as ApplicationContract,
   Config as ConfigContract,
-  Kernel,
   ServiceContainer,
   ServiceProvider,
   StaticEnvironment,
@@ -188,10 +188,7 @@ export class Application implements ApplicationContract {
     }
 
     if (!this.kernel) {
-      throw new Error(
-        `Kernel not defined. ` +
-          `Try registering a kernel by using registerKernel before starting the application.`,
-      );
+      this.registerKernel(Kernel);
     }
 
     this.serviceProviders.forEach((provider) => {
