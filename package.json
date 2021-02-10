@@ -1,6 +1,6 @@
 {
   "name": "@micra/application",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "author": "Olavo Amorim Santos<contact@micra.dev>",
   "license": "MIT",
   "main": "lib/sync/index.js",

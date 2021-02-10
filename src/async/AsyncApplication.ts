@@ -109,7 +109,7 @@ export class Application implements ApplicationContract {
     this.container.value('app', this);
     this.container.value('env', this.env);
     this.container.value('container', this.container);
-    this.container.value<any, ConfigContract>('config', this.config);
+    this.container.value('config', this.config);
 
     return this;
   }
@@ -176,7 +176,7 @@ export class Application implements ApplicationContract {
         if (!this.container) {
           throw new Error(
             `Service container not defined. ` +
-            `Try registering a container by using registerContainer before starting the application.`,
+              `Try registering a container by using registerContainer before starting the application.`,
           );
         }
 

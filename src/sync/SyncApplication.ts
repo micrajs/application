@@ -78,7 +78,7 @@ export class Application implements ApplicationContract {
       if (!this.container) {
         throw new Error(
           `Service container not defined. ` +
-          `Try registering a container by using registerContainer before registering your kernel.`,
+            `Try registering a container by using registerContainer before registering your kernel.`,
         );
       }
 
@@ -109,8 +109,8 @@ export class Application implements ApplicationContract {
     this.container = new container();
     this.container.value('env', this.env);
     this.container.value('container', this.container);
-    this.container.value<any, Application>('app', this);
-    this.container.value<any, ConfigContract>('config', this.config);
+    this.container.value('app', this);
+    this.container.value('config', this.config);
 
     return this;
   }
@@ -127,7 +127,7 @@ export class Application implements ApplicationContract {
     if (!this.container) {
       throw new Error(
         `Service container not defined. ` +
-        `Try registering a container by using registerContainer before registering your kernel.`,
+          `Try registering a container by using registerContainer before registering your kernel.`,
       );
     }
     this.kernel = new kernel(this.container);
@@ -139,7 +139,7 @@ export class Application implements ApplicationContract {
     if (!this.container) {
       throw new Error(
         `Service container not defined. ` +
-        `Try registering a container by using registerContainer before registering your providers.`,
+          `Try registering a container by using registerContainer before registering your providers.`,
       );
     }
     providers.forEach((provider) => {
@@ -177,7 +177,7 @@ export class Application implements ApplicationContract {
         if (!this.container) {
           throw new Error(
             `Service container not defined. ` +
-            `Try registering a container by using registerContainer before starting the application.`,
+              `Try registering a container by using registerContainer before starting the application.`,
           );
         }
 
@@ -210,7 +210,7 @@ export class Application implements ApplicationContract {
     if (!this.container) {
       throw new Error(
         `Service container not defined. ` +
-        `Try registering a container by using registerContainer before starting the application.`,
+          `Try registering a container by using registerContainer before starting the application.`,
       );
     }
 
