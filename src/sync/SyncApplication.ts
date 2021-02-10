@@ -11,6 +11,7 @@ import type {
   StaticServiceContainer,
   StaticServiceProvider,
 } from '@micra/core';
+import type { GlobalHelpers } from '../types';
 
 export class Application implements ApplicationContract {
   static get global(): any {
@@ -51,10 +52,24 @@ export class Application implements ApplicationContract {
   serviceProviders: ServiceProvider[] = [];
   hasStarted = false;
   protected initializedProviders: string[] = [];
+  protected globalHelpers: GlobalHelpers = {
+    config: true,
+    env: true,
+    use: true,
+  };
 
   constructor() {
     this.env = new MultiEnv();
     this.config = new Config();
+    this.registerGlobals();
+  }
+
+  registerGlobals(partial: Partial<GlobalHelpers> = {}) {
+    this.globalHelpers = {
+      ...this.globalHelpers,
+      ...partial,
+    };
+
     this.bootstrap();
   }
 
@@ -63,7 +78,7 @@ export class Application implements ApplicationContract {
       if (!this.container) {
         throw new Error(
           `Service container not defined. ` +
-            `Try registering a container by using registerContainer before registering your kernel.`,
+          `Try registering a container by using registerContainer before registering your kernel.`,
         );
       }
 
@@ -92,10 +107,10 @@ export class Application implements ApplicationContract {
 
   registerContainer(container: StaticServiceContainer) {
     this.container = new container();
-    this.container.value('app', this);
     this.container.value('env', this.env);
-    this.container.value('config', this.config);
     this.container.value('container', this.container);
+    this.container.value<any, Application>('app', this);
+    this.container.value<any, ConfigContract>('config', this.config);
 
     return this;
   }
@@ -112,7 +127,7 @@ export class Application implements ApplicationContract {
     if (!this.container) {
       throw new Error(
         `Service container not defined. ` +
-          `Try registering a container by using registerContainer before registering your kernel.`,
+        `Try registering a container by using registerContainer before registering your kernel.`,
       );
     }
     this.kernel = new kernel(this.container);
@@ -124,7 +139,7 @@ export class Application implements ApplicationContract {
     if (!this.container) {
       throw new Error(
         `Service container not defined. ` +
-          `Try registering a container by using registerContainer before registering your providers.`,
+        `Try registering a container by using registerContainer before registering your providers.`,
       );
     }
     providers.forEach((provider) => {
@@ -141,24 +156,36 @@ export class Application implements ApplicationContract {
 
   bootstrap() {
     // Initialize config
-    Application.global.config = (key: string, fallback?: any) => {
-      return this.config.get(key) ?? fallback;
-    };
+    if (this.globalHelpers.config) {
+      Application.global.config = (key: string, fallback?: any) => {
+        return this.config.get(key) ?? fallback;
+      };
+    } else {
+      Application.global.config = undefined;
+    }
     // Initialize env
-    Application.global.env = (key: string, fallback?: any) => {
-      return this.env.get(key) ?? fallback;
-    };
+    if (this.globalHelpers.env) {
+      Application.global.env = (key: string, fallback?: any) => {
+        return this.env.get(key) ?? fallback;
+      };
+    } else {
+      Application.global.env = undefined;
+    }
     // Initialize use
-    Application.global.use = (key: string) => {
-      if (!this.container) {
-        throw new Error(
-          `Service container not defined. ` +
+    if (this.globalHelpers.use) {
+      Application.global.use = (key: keyof Application.Services) => {
+        if (!this.container) {
+          throw new Error(
+            `Service container not defined. ` +
             `Try registering a container by using registerContainer before starting the application.`,
-        );
-      }
+          );
+        }
 
-      return this.container.use(key);
-    };
+        return this.container.use(key);
+      };
+    } else {
+      Application.global.use = undefined;
+    }
   }
 
   start() {
@@ -183,7 +210,7 @@ export class Application implements ApplicationContract {
     if (!this.container) {
       throw new Error(
         `Service container not defined. ` +
-          `Try registering a container by using registerContainer before starting the application.`,
+        `Try registering a container by using registerContainer before starting the application.`,
       );
     }
 
