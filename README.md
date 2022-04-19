@@ -10,7 +10,7 @@
 
 <p align="center">
   <img alt="version" src="https://img.shields.io/npm/v/@micra/application?color=%23F3626C&logo=npm" />
-  <img alt="issues" src="https://img.shields.io/github/issues-search/micrajs/community?color=%23F3626C&label=Issues&logo=github&query=label%3A%22Project%3A%20application%22" />
+  <img alt="issues" src="https://img.shields.io/github/issues-search/micrajs/community?color=%23F3626C&label=Issues&logo=github&query=is%3Aopen%20label%3A%22Project%3A%20application%22" />
   <img alt="prs" src="https://img.shields.io/github/issues-pr/micrajs/application?color=%23F3626C&label=Pull%20requests&logo=github" />
 </p>
 
@@ -18,14 +18,8 @@
 
 ## About
 
-Micra framework's Application class.
+Micra's isomorphic application class
 
-## Installation
-
-```sh
-yarn add @micra/application
-```
-
-## Author
+## Contributors
 
 - [Olavo Amorim Santos](https://github.com/olavoasantos)

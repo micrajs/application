@@ -1,6 +1,56 @@
 {
   "name": "@micra/application",
   "version": "0.1.0-next.0",
+  "description": "Micra's isomorphic application class",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/micrajs/application.git"
+  },
   "author": "Olavo Amorim Santos<olavo.santos@micra.dev>",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/micrajs/community/issues?q=is:issue+is:open+label:%22Project:+application%22+label:%22Type:+fix%22"
+  },
+  "scripts": {
+    "build:code": "vite build --config .viterc.ts",
+    "build:types": "tsc -p tsconfig.json && tsc-alias --silent -p tsconfig.json --dir .",
+    "build": "concurrently 'pnpm:build:*'",
+    "dev:code": "pnpm build:code -- --watch",
+    "dev:types": "nodemon --ext 'ts,tsx' --exec 'pnpm build:types'",
+    "dev": "concurrently 'pnpm:dev:*'",
+    "lint": "eslint --ext .ts,.tsx .",
+    "prepare:husky": "husky install .config/husky",
+    "test:coverage": "vitest run --coverage --config .viterc.ts",
+    "test:dev": "vitest --config .viterc.ts",
+    "test": "vitest run --config .viterc.ts",
+    "version:prerelease": "npm version prerelease --preid=next --allow-same-version && git push --follow-tags"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^16.2.1",
+    "@micra/commit-lint-config": "next",
+    "@micra/core": "next",
+    "@micra/eslint-config": "next",
+    "@micra/typescript-config": "next",
+    "@micra/vite-config": "next",
+    "@types/node": "^17.0.21",
+    "c8": "^7.11.0",
+    "concurrently": "^7.0.0",
+    "eslint": "^8.11.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.6",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.6.0",
+    "tsc-alias": "^1.6.4",
+    "typescript": "^4.6.2",
+    "vite": "^2.8.6",
+    "vitest": "^0.6.1"
+  },
+  "dependencies": {
+    "@micra/configuration": "next",
+    "@micra/environment": "next",
+    "@micra/error": "next",
+    "@micra/event-emitter": "next",
+    "@micra/service-container": "next"
+  }
 }

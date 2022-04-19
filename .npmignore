@@ -1,0 +1,8 @@
+.*
+node_modules
+tsconfig.*
+*.ts
+!*.d.ts
+**/tests/**
+docs/**
+coverage/**
