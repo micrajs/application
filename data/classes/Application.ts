@@ -8,7 +8,7 @@ import {createConfigHelper} from '../utilities/createConfigHelper';
 import {createEnvHelper} from '../utilities/createEnvHelper';
 import {createUseHelper} from '../utilities/createUseHelper';
 import {getGlobal} from '../utilities/getGlobal';
-import {isClass} from '../utilities/isClass';
+import {getInstanceOf} from '../utilities/getInstanceOf';
 
 export class Application
   extends EventEmitter<Micra.ApplicationEvents>
@@ -71,7 +71,7 @@ export class Application
     }
 
     for (const environment of Object.values(environments)) {
-      this.environment.addSources(isClass(environment));
+      this.environment.addSources(getInstanceOf(environment));
     }
 
     await this.environment.init();
@@ -85,7 +85,7 @@ export class Application
     }
 
     for (const environment of Object.values(environments)) {
-      this.environment.addSources(isClass(environment));
+      this.environment.addSources(getInstanceOf(environment));
     }
 
     this.environment.initSync();
@@ -101,7 +101,7 @@ export class Application
     Object.entries(configurations).forEach(([key, value]) => {
       this.configuration.set(
         key as keyof Application.Configurations,
-        isClass(
+        getInstanceOf(
           value,
         ) as Application.Configurations[keyof Application.Configurations],
       );
@@ -117,7 +117,7 @@ export class Application
     const providers: Micra.ServiceProvider[] = [];
     const serviceProvidersInstances = Object.entries(serviceProviders).reduce(
       (instances, [key, provider]) => {
-        const instance = isClass(provider);
+        const instance = getInstanceOf(provider);
         instances[key] = instance;
         providers.push(instance);
         return instances;
@@ -149,7 +149,7 @@ export class Application
     const providers: Micra.ServiceProvider[] = [];
     const serviceProvidersInstances = Object.entries(serviceProviders).reduce(
       (instances, [key, provider]) => {
-        const instance = isClass(provider);
+        const instance = getInstanceOf(provider);
         instances[key] = instance;
         providers.push(instance);
         return instances;
@@ -175,7 +175,7 @@ export class Application
   private async initializeKernel(
     kernel: Micra.ApplicationConfiguration['kernel'],
   ): Promise<void> {
-    this.kernel = isClass(kernel);
+    this.kernel = getInstanceOf(kernel);
 
     await this.kernel.boot?.(this);
   }
@@ -183,7 +183,7 @@ export class Application
   private initializeKernelSync(
     kernel: Micra.ApplicationConfiguration['kernel'],
   ): void {
-    this.kernel = isClass(kernel);
+    this.kernel = getInstanceOf(kernel);
 
     this.kernel.boot?.(this);
   }
