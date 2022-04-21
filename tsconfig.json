@@ -3,7 +3,7 @@
   "compilerOptions": {
     "declaration": true,
     "emitDeclarationOnly": true,
-    "types": ["vitest/globals"],
+    "types": ["vitest/globals", "@micra/faker/complete"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["*"]
