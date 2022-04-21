@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import {MockEnvironment} from '@micra/core-test-utils/environment';
 import {
-  MockedServiceContainer,
-  MockedServiceProvider,
-  MockedAsyncServiceProvider,
-  MockedAsyncKernel,
-  MockedKernel,
-} from '@/testing/mocks';
+  MockServiceContainer,
+  MockServiceProvider,
+  MockAsyncServiceProvider,
+  MockAsyncKernel,
+  MockKernel,
+} from '@micra/core-test-utils/index.mjs';
 import {Application} from '../Application';
 
 declare global {
@@ -51,7 +51,7 @@ describe('Application tests', () => {
   describe('Application.initializeProviders tests', () => {
     it('should call register method on providers', async () => {
       const application = new Application();
-      const ServiceProvider = new MockedAsyncServiceProvider();
+      const ServiceProvider = new MockAsyncServiceProvider();
 
       await application.initializeProviders({ServiceProvider});
 
@@ -61,7 +61,7 @@ describe('Application tests', () => {
 
     it('should call boot method on providers', async () => {
       const application = new Application();
-      const ServiceProvider = new MockedAsyncServiceProvider();
+      const ServiceProvider = new MockAsyncServiceProvider();
 
       await application.initializeProviders({ServiceProvider});
 
@@ -73,7 +73,7 @@ describe('Application tests', () => {
       const application = new Application();
       const register = vi.fn(async () => {});
       const boot = vi.fn(async () => {});
-      const ServiceProvider = MockedAsyncServiceProvider.with({register, boot});
+      const ServiceProvider = MockAsyncServiceProvider.with({register, boot});
 
       await application.initializeProviders({ServiceProvider});
 
@@ -85,7 +85,7 @@ describe('Application tests', () => {
 
     it('should add providers to the serviceProviders list', async () => {
       const application = new Application();
-      const ServiceProvider = new MockedAsyncServiceProvider();
+      const ServiceProvider = new MockAsyncServiceProvider();
 
       await application.initializeProviders({ServiceProvider});
 
@@ -96,7 +96,7 @@ describe('Application tests', () => {
       const application = new Application();
       const register = vi.fn(async () => {});
       const boot = vi.fn(async () => {});
-      const ServiceProvider = MockedAsyncServiceProvider.with({register, boot});
+      const ServiceProvider = MockAsyncServiceProvider.with({register, boot});
 
       await application.initializeProviders({ServiceProvider});
 
@@ -107,7 +107,7 @@ describe('Application tests', () => {
   describe('Application.initializeProvidersSync tests', () => {
     it('should call register method on providers synchronously', () => {
       const application = new Application();
-      const ServiceProvider = new MockedServiceProvider();
+      const ServiceProvider = new MockServiceProvider();
 
       application.initializeProvidersSync({ServiceProvider});
 
@@ -117,7 +117,7 @@ describe('Application tests', () => {
 
     it('should call boot method on providers synchronously', () => {
       const application = new Application();
-      const ServiceProvider = new MockedServiceProvider();
+      const ServiceProvider = new MockServiceProvider();
 
       application.initializeProvidersSync({ServiceProvider});
 
@@ -129,7 +129,7 @@ describe('Application tests', () => {
       const application = new Application();
       const register = vi.fn();
       const boot = vi.fn();
-      const ServiceProvider = MockedServiceProvider.with({register, boot});
+      const ServiceProvider = MockServiceProvider.with({register, boot});
 
       application.initializeProvidersSync({ServiceProvider});
 
@@ -141,7 +141,7 @@ describe('Application tests', () => {
 
     it('should add providers to the serviceProviders list synchronously', () => {
       const application = new Application();
-      const ServiceProvider = new MockedServiceProvider();
+      const ServiceProvider = new MockServiceProvider();
 
       application.initializeProvidersSync({ServiceProvider});
 
@@ -152,7 +152,7 @@ describe('Application tests', () => {
       const application = new Application();
       const register = vi.fn();
       const boot = vi.fn();
-      const ServiceProvider = MockedServiceProvider.with({register, boot});
+      const ServiceProvider = MockServiceProvider.with({register, boot});
 
       application.initializeProvidersSync({ServiceProvider});
 
@@ -224,10 +224,10 @@ describe('Application tests', () => {
       const application = new Application();
 
       await application.start({
-        container: MockedServiceContainer,
+        container: MockServiceContainer,
       });
 
-      expect(application.container).toBeInstanceOf(MockedServiceContainer);
+      expect(application.container).toBeInstanceOf(MockServiceContainer);
     });
 
     it('should create the use global helper', async () => {
@@ -241,7 +241,7 @@ describe('Application tests', () => {
     it("should call the use method on the application's service container", async () => {
       const application = new Application();
       await application.start({
-        container: MockedServiceContainer,
+        container: MockServiceContainer,
       });
 
       globalSelf.use?.('foo');
@@ -448,7 +448,7 @@ describe('Application tests', () => {
     it('should initialize providers', async () => {
       const application = new Application();
       const providers = {
-        mocked: new MockedAsyncServiceProvider(),
+        mocked: new MockAsyncServiceProvider(),
       };
 
       await application.start({
@@ -462,7 +462,7 @@ describe('Application tests', () => {
     it('should add providers to service providers list', async () => {
       const application = new Application();
       const providers = {
-        mocked: new MockedAsyncServiceProvider(),
+        mocked: new MockAsyncServiceProvider(),
       };
 
       await application.start({
@@ -477,7 +477,7 @@ describe('Application tests', () => {
       const register = vi.fn();
       const boot = vi.fn();
       const providers = {
-        mocked: MockedAsyncServiceProvider.with({register, boot}),
+        mocked: MockAsyncServiceProvider.with({register, boot}),
       };
 
       await application.start({
@@ -491,7 +491,7 @@ describe('Application tests', () => {
     it('should instantiate and add providers to service providers list', async () => {
       const application = new Application();
       const providers = {
-        mocked: MockedAsyncServiceProvider,
+        mocked: MockAsyncServiceProvider,
       };
 
       await application.start({
@@ -499,7 +499,7 @@ describe('Application tests', () => {
       });
 
       expect(application.serviceProviders[0]).toBeInstanceOf(
-        MockedAsyncServiceProvider,
+        MockAsyncServiceProvider,
       );
     });
 
@@ -526,7 +526,7 @@ describe('Application tests', () => {
 
     it('should initialize a kernel with itself', async () => {
       const application = new Application();
-      const kernel = new MockedAsyncKernel();
+      const kernel = new MockAsyncKernel();
 
       await application.start({
         kernel,
@@ -538,7 +538,7 @@ describe('Application tests', () => {
     it('should instantiate and initialize a kernel with itself', async () => {
       const application = new Application();
       const boot = vi.fn();
-      const kernel = MockedAsyncKernel.with({boot});
+      const kernel = MockAsyncKernel.with({boot});
 
       await application.start({
         kernel,
@@ -633,10 +633,10 @@ describe('Application tests', () => {
       const application = new Application();
 
       application.startSync({
-        container: MockedServiceContainer,
+        container: MockServiceContainer,
       });
 
-      expect(application.container).toBeInstanceOf(MockedServiceContainer);
+      expect(application.container).toBeInstanceOf(MockServiceContainer);
     });
 
     it('should create the use global helper', () => {
@@ -650,7 +650,7 @@ describe('Application tests', () => {
     it("should call the use method on the application's service container", () => {
       const application = new Application();
       application.startSync({
-        container: MockedServiceContainer,
+        container: MockServiceContainer,
       });
 
       globalSelf.use?.('foo');
@@ -857,7 +857,7 @@ describe('Application tests', () => {
     it('should initialize providers', () => {
       const application = new Application();
       const providers = {
-        mocked: new MockedServiceProvider(),
+        mocked: new MockServiceProvider(),
       };
 
       application.startSync({
@@ -871,7 +871,7 @@ describe('Application tests', () => {
     it('should add providers to service providers list', () => {
       const application = new Application();
       const providers = {
-        mocked: new MockedServiceProvider(),
+        mocked: new MockServiceProvider(),
       };
 
       application.startSync({
@@ -886,7 +886,7 @@ describe('Application tests', () => {
       const register = vi.fn();
       const boot = vi.fn();
       const providers = {
-        mocked: MockedServiceProvider.with({register, boot}),
+        mocked: MockServiceProvider.with({register, boot}),
       };
 
       application.startSync({
@@ -900,7 +900,7 @@ describe('Application tests', () => {
     it('should instantiate and add providers to service providers list', () => {
       const application = new Application();
       const providers = {
-        mocked: MockedServiceProvider,
+        mocked: MockServiceProvider,
       };
 
       application.startSync({
@@ -908,7 +908,7 @@ describe('Application tests', () => {
       });
 
       expect(application.serviceProviders[0]).toBeInstanceOf(
-        MockedServiceProvider,
+        MockServiceProvider,
       );
     });
 
@@ -935,7 +935,7 @@ describe('Application tests', () => {
 
     it('should initialize a kernel with itself', () => {
       const application = new Application();
-      const kernel = new MockedKernel();
+      const kernel = new MockKernel();
 
       application.startSync({
         kernel,
@@ -947,7 +947,7 @@ describe('Application tests', () => {
     it('should instantiate and initialize a kernel with itself', () => {
       const application = new Application();
       const boot = vi.fn();
-      const kernel = MockedKernel.with({boot});
+      const kernel = MockKernel.with({boot});
 
       application.startSync({
         kernel,

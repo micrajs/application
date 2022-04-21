@@ -5,7 +5,7 @@ specifiers:
   '@micra/commit-lint-config': next
   '@micra/configuration': next
   '@micra/core': ^0.1.0-next.10
-  '@micra/core-test-utils': next
+  '@micra/core-test-utils': ^0.1.0-next.4
   '@micra/environment': next
   '@micra/error': next
   '@micra/eslint-config': next
@@ -23,6 +23,7 @@ specifiers:
   lint-staged: ^12.3.6
   nodemon: ^2.0.15
   prettier: ^2.6.0
+  tinyspy: ^0.3.2
   tsc-alias: ^1.6.4
   typescript: ^4.6.2
   vite: ^2.8.6
@@ -39,7 +40,7 @@ devDependencies:
   '@commitlint/cli': 16.2.1
   '@micra/commit-lint-config': 0.1.0-next.1_@commitlint+cli@16.2.1
   '@micra/core': 0.1.0-next.10
-  '@micra/core-test-utils': 0.1.0-next.3_0eef7c2c5e7d453c6b5c100cc3685925
+  '@micra/core-test-utils': 0.1.0-next.4_0eef7c2c5e7d453c6b5c100cc3685925
   '@micra/eslint-config': 0.1.0-next.1_83bc012e22a441999bc7e52466863909
   '@micra/faker': 0.1.0-next.3
   '@micra/typescript-config': 0.1.0-next.1
@@ -53,6 +54,7 @@ devDependencies:
   lint-staged: 12.3.6
   nodemon: 2.0.15
   prettier: 2.6.0
+  tinyspy: 0.3.2
   tsc-alias: 1.6.4
   typescript: 4.6.2
   vite: 2.8.6
@@ -308,8 +310,8 @@ packages:
       '@micra/event-emitter': 0.1.0-next.2
     dev: false
 
-  /@micra/core-test-utils/0.1.0-next.3_0eef7c2c5e7d453c6b5c100cc3685925:
-    resolution: {integrity: sha512-5caHO9X4j0oMpbirzM/mHm1A1qa9s2Pk1FbcFfL4LcKbie1k08rdCPJdEEpBm8lDmV8dii/3nymV25E6FE4Www==}
+  /@micra/core-test-utils/0.1.0-next.4_0eef7c2c5e7d453c6b5c100cc3685925:
+    resolution: {integrity: sha512-gjJRTkZ5ezTKiGWdjMOEvUxoIbPinVy45m/xCSrn4KDrMDbxfynZmm2Ygeyu49tFYox+kgB95Bnl7ElpAeYvqg==}
     peerDependencies:
       '@micra/core': next
       '@micra/faker': next
@@ -3023,11 +3025,6 @@ packages:
     engines: {node: '>=14.0.0'}
     dev: true
 
-  /tinyspy/0.3.0:
-    resolution: {integrity: sha512-c5uFHqtUp74R2DJE3/Efg0mH5xicmgziaQXMm/LvuuZn3RdpADH32aEGDRyCzObXT1DNfwDMqRQ/Drh1MlO12g==}
-    engines: {node: '>=14.0.0'}
-    dev: true
-
   /tinyspy/0.3.2:
     resolution: {integrity: sha512-2+40EP4D3sFYy42UkgkFFB+kiX2Tg3URG/lVvAZFfLxgGpnWl5qQJuBw1gaLttq8UOS+2p3C0WrhJnQigLTT2Q==}
     engines: {node: '>=14.0.0'}
@@ -3297,7 +3294,7 @@ packages:
       chai: 4.3.6
       local-pkg: 0.4.1
       tinypool: 0.1.2
-      tinyspy: 0.3.0
+      tinyspy: 0.3.2
       vite: 2.8.6
     transitivePeerDependencies:
       - less
