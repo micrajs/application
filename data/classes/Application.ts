@@ -1,13 +1,14 @@
 import {Configuration} from '@micra/configuration';
+import {Static} from '@micra/core/utilities/Static';
 import {Environment} from '@micra/environment';
 import {EventEmitter} from '@micra/event-emitter';
+import {normalizeError} from '@micra/error';
 import {ServiceContainer} from '@micra/service-container';
-import {getGlobal} from '../utilities/getGlobal';
-import {createEnvHelper} from '../utilities/createEnvHelper';
 import {createConfigHelper} from '../utilities/createConfigHelper';
+import {createEnvHelper} from '../utilities/createEnvHelper';
 import {createUseHelper} from '../utilities/createUseHelper';
+import {getGlobal} from '../utilities/getGlobal';
 import {isClass} from '../utilities/isClass';
-import {Static} from '@micra/core/utilities/Static';
 
 export class Application
   extends EventEmitter<Micra.ApplicationEvents>
@@ -195,9 +196,12 @@ export class Application
 
       this.emit('willRun');
       return (await this.kernel.run?.(this)) as unknown as Return;
-    } catch (e) {
-      this.emitSync('onError', e as Micra.Error);
-      throw e;
+    } catch (thrown) {
+      const error = normalizeError(thrown);
+
+      this.emitSync('onError', normalizeError(thrown));
+
+      throw error;
     }
   }
 
@@ -209,9 +213,12 @@ export class Application
 
       this.emit('willRun');
       return this.kernel.run?.(this) as unknown as Return;
-    } catch (e) {
-      this.emitSync('onError', e as Micra.Error);
-      throw e;
+    } catch (thrown) {
+      const error = normalizeError(thrown);
+
+      this.emitSync('onError', normalizeError(thrown));
+
+      throw error;
     }
   }
 

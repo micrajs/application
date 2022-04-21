@@ -7,7 +7,7 @@ specifiers:
   '@micra/core': next
   '@micra/core-test-utils': ^0.1.0-next.3
   '@micra/environment': next
-  '@micra/error': next
+  '@micra/error': ^0.1.0-next.5
   '@micra/eslint-config': next
   '@micra/event-emitter': next
   '@micra/faker': ^0.1.0-next.3
@@ -31,7 +31,7 @@ specifiers:
 dependencies:
   '@micra/configuration': 0.1.0-next.1
   '@micra/environment': 0.1.0-next.2
-  '@micra/error': 0.1.0-next.3
+  '@micra/error': 0.1.0-next.5
   '@micra/event-emitter': 0.1.0-next.1
   '@micra/service-container': 0.1.0-next.1
 
@@ -326,12 +326,12 @@ packages:
   /@micra/environment/0.1.0-next.2:
     resolution: {integrity: sha512-V3zbuJMwUEjIculuzMivtSOkc/hiEpZE0TgkCTlIRs061QgDdwe+cHCUySfnn9zc6woOzrYhqmxPsew4hvKKQw==}
     dependencies:
-      '@micra/error': 0.1.0-next.3
+      '@micra/error': 0.1.0-next.5
       '@micra/event-emitter': 0.1.0-next.1
     dev: false
 
-  /@micra/error/0.1.0-next.3:
-    resolution: {integrity: sha512-b6UHEAQ3OT+VO12LcD8CLP8Mt1WnPxCq6UKZ6Sdh50tOgejcB7Ckh3ZpgHNMymtVRkxfJ7n//ngNVBnYhb0+Aw==}
+  /@micra/error/0.1.0-next.5:
+    resolution: {integrity: sha512-jCjsQ0RKJBFE/rbst5RfAJVu1LD66KfXvK2nFaxLiZWph5UOuQNVuahXQ/HBUFik1YLEkPE527ifiYY1MzMx7g==}
     dev: false
 
   /@micra/eslint-config/0.1.0-next.1_83bc012e22a441999bc7e52466863909:
@@ -362,7 +362,7 @@ packages:
   /@micra/service-container/0.1.0-next.1:
     resolution: {integrity: sha512-1MOj2Iz6t9IUN27/RC7IBHiOoiHdyU+G/t3wp/9fDvOJlZqTCQ0OzVFiV8DE577r11yxb6C/Wq2mOzaC2M4IYA==}
     dependencies:
-      '@micra/error': 0.1.0-next.3
+      '@micra/error': 0.1.0-next.5
       '@micra/event-emitter': 0.1.0-next.1
     dev: false
 
