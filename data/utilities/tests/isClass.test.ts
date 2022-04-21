@@ -1,10 +1,10 @@
-import {isClass} from '../isClass';
+import {getInstanceOf} from '../getInstanceOf';
 
-describe('isClass tests', () => {
+describe('getInstanceOf tests', () => {
   it('should return true if value is a class', () => {
     class MyClass {}
 
-    const result = isClass(MyClass);
+    const result = getInstanceOf(MyClass);
 
     expect(result).instanceOf(MyClass);
   });
@@ -12,7 +12,7 @@ describe('isClass tests', () => {
   it('should return false if value is a class', () => {
     const NotAClass = {};
 
-    const result = isClass(NotAClass);
+    const result = getInstanceOf(NotAClass);
 
     expect(result).toBe(NotAClass);
   });
@@ -24,6 +24,6 @@ describe('isClass tests', () => {
       }
     }
 
-    expect(() => isClass(MyClass)).toThrowError(Error);
+    expect(() => getInstanceOf(MyClass)).toThrowError(Error);
   });
 });
