@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import {MockEnvironment} from '@micra/core-test-utils/environment';
+import {MockAsyncKernel, MockKernel} from '@micra/core-test-utils/kernel';
+import {MockServiceContainer} from '@micra/core-test-utils/service-container';
 import {
-  MockServiceContainer,
-  MockServiceProvider,
   MockAsyncServiceProvider,
-  MockAsyncKernel,
-  MockKernel,
-  // TODO: fix this
-} from '@micra/core-test-utils/index.mjs';
+  MockServiceProvider,
+} from '@micra/core-test-utils/service-provider';
 import {Application} from '../Application';
 
 declare global {
