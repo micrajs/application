@@ -28,8 +28,8 @@
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
     "@micra/commit-lint-config": "next",
-    "@micra/core": "^0.1.0-next.10",
-    "@micra/core-test-utils": "^0.1.0-next.4",
+    "@micra/core": "next",
+    "@micra/core-test-utils": "next",
     "@micra/eslint-config": "next",
     "@micra/faker": "next",
     "@micra/typescript-config": "next",
