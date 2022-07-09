@@ -135,10 +135,10 @@ export class Application
   }
 
   async run<Return = void>(
-    configuration?: Partial<Micra.ApplicationConfiguration>,
+    configuration?: Partial<Micra.ApplicationConfiguration<Return>>,
   ): Promise<Return> {
     try {
-      await this.start(configuration);
+      await this.start<Return>(configuration);
 
       this.emit('willRun');
       return (await this.kernel.run?.(this)) as unknown as Return;
@@ -151,8 +151,8 @@ export class Application
     }
   }
 
-  async start(
-    configuration?: Partial<Micra.ApplicationConfiguration>,
+  async start<Return = void>(
+    configuration?: Partial<Micra.ApplicationConfiguration<Return>>,
   ): Promise<void> {
     if (this._hasStarted) {
       return;
