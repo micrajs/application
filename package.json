@@ -16,6 +16,11 @@
       "import": "./index.mjs",
       "require": "./index.js",
       "types": "./index.d.ts"
+    },
+    "./sync": {
+      "import": "./sync.mjs",
+      "require": "./sync.js",
+      "types": "./sync.d.ts"
     }
   },
   "scripts": {

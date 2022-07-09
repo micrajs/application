@@ -10,7 +10,7 @@ import {createUseHelper} from '../utilities/createUseHelper';
 import {getGlobal} from '../utilities/getGlobal';
 import {getInstanceOf} from '../utilities/getInstanceOf';
 
-export class Application
+export class ApplicationSync
   extends EventEmitter<Micra.ApplicationEvents>
   implements Micra.Application
 {
@@ -63,10 +63,10 @@ export class Application
     this.container = new container();
   }
 
-  private async initializeEnvironment(
+  private initializeEnvironment(
     environments: Micra.ApplicationConfiguration['environments'],
-  ): Promise<void> {
-    if (this._globals.env) {
+  ): void {
+    if (this._globals.env && !this._global.env) {
       this._global.env = createEnvHelper(this);
     }
 
@@ -74,7 +74,7 @@ export class Application
       this.environment.addSources(getInstanceOf(environment));
     }
 
-    await this.environment.init();
+    this.environment.initSync();
   }
 
   private initializeConfigurations(
@@ -94,12 +94,12 @@ export class Application
     });
   }
 
-  async initializeProviders(
+  initializeProviders = ((
     serviceProviders: Record<
       string,
       Micra.ServiceProvider | Static<Micra.ServiceProvider>
     >,
-  ): Promise<void> {
+  ): void => {
     const providers: Micra.ServiceProvider[] = [];
     const serviceProvidersInstances = Object.entries(serviceProviders).reduce(
       (instances, [key, provider]) => {
@@ -113,35 +113,35 @@ export class Application
 
     for (const provider of providers) {
       if (provider.register) {
-        await provider.register(this);
+        provider.register(this);
       }
     }
 
     for (const provider of providers) {
       if (provider.boot) {
-        await provider.boot(this);
+        provider.boot(this);
       }
     }
 
     this._providers = {...this._providers, ...serviceProvidersInstances};
-  }
+  }) as Micra.Application['initializeProviders'];
 
-  private async initializeKernel(
+  private initializeKernel(
     kernel: Micra.ApplicationConfiguration['kernel'],
-  ): Promise<void> {
+  ): void {
     this.kernel = getInstanceOf(kernel);
 
-    await this.kernel.boot?.(this);
+    this.kernel.boot?.(this);
   }
 
-  async run<Return = void>(
+  run<Return = void>(
     configuration?: Partial<Micra.ApplicationConfiguration>,
-  ): Promise<Return> {
+  ): Return {
     try {
-      await this.start(configuration);
+      this.start(configuration);
 
       this.emit('willRun');
-      return (await this.kernel.run?.(this)) as unknown as Return;
+      return this.kernel.run?.(this) as unknown as Return;
     } catch (thrown) {
       const error = normalizeError(thrown);
 
@@ -151,9 +151,9 @@ export class Application
     }
   }
 
-  async start(
-    configuration?: Partial<Micra.ApplicationConfiguration>,
-  ): Promise<void> {
+  start = (<Return = void>(
+    configuration?: Partial<Micra.ApplicationConfiguration<Return>>,
+  ): void => {
     if (this._hasStarted) {
       return;
     }
@@ -174,7 +174,7 @@ export class Application
     this.initializeContainer(this._configuration.container ?? ServiceContainer);
     this.emit('didInitializeContainer', this.container);
     this.emit('willInitializeEnvironments');
-    await this.initializeEnvironment(this._configuration.environments ?? {});
+    this.initializeEnvironment(this._configuration.environments ?? {});
     this.emit('didInitializeEnvironments', this.environment);
     this.emit('willInitializeConfigurations');
     this.initializeConfigurations(
@@ -182,11 +182,11 @@ export class Application
     );
     this.emit('didInitializeConfigurations', this.configuration);
     this.emit('willInitializeProviders');
-    await this.initializeProviders(this._configuration.providers ?? {});
+    this.initializeProviders(this._configuration.providers ?? {});
     this.emit('didInitializeProviders', this.serviceProviders);
     this.emit('willInitializeKernel');
-    await this.initializeKernel(this._configuration.kernel ?? {});
+    this.initializeKernel(this._configuration.kernel ?? {});
     this.emit('didInitializeKernel', this.kernel);
     this.emit('didStart');
-  }
+  }) as Micra.Application['start'];
 }
