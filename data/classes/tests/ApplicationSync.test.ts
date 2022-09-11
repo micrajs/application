@@ -203,7 +203,7 @@ describe('Application tests', () => {
     it('should emit the didInitializeContainer event with the service container', () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didInitializeContainer', spy);
+      application.on('containerReady', spy);
 
       application.start();
 
@@ -285,7 +285,7 @@ describe('Application tests', () => {
     it('should emit the didInitializeEnvironments event with the environment', () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didInitializeEnvironments', spy);
+      application.on('environmentsReady', spy);
 
       application.start();
 
@@ -367,7 +367,7 @@ describe('Application tests', () => {
     it('should emit the didInitializeConfigurations event with the configurations', () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didInitializeConfigurations', spy);
+      application.on('configurationsReady', spy);
 
       application.start();
 
@@ -446,7 +446,7 @@ describe('Application tests', () => {
     it('should emit the didInitializeProviders event with the service providers', () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didInitializeProviders', spy);
+      application.on('providersReady', spy);
 
       application.start();
 
@@ -490,7 +490,7 @@ describe('Application tests', () => {
     it('should emit the didInitializeKernel event with the service providers', () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didInitializeKernel', spy);
+      application.on('kernelReady', spy);
 
       application.start();
 
@@ -501,7 +501,7 @@ describe('Application tests', () => {
     it('should emit the didStart event', () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didStart', spy);
+      application.on('applicationReady', spy);
 
       application.start();
 

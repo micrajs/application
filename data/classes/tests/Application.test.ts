@@ -203,7 +203,7 @@ describe('Application tests', () => {
     it('should emit the didInitializeContainer event with the service container', async () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didInitializeContainer', spy);
+      application.on('containerReady', spy);
 
       await application.start();
 
@@ -285,7 +285,7 @@ describe('Application tests', () => {
     it('should emit the didInitializeEnvironments event with the environment', async () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didInitializeEnvironments', spy);
+      application.on('environmentsReady', spy);
 
       await application.start();
 
@@ -367,7 +367,7 @@ describe('Application tests', () => {
     it('should emit the didInitializeConfigurations event with the configurations', async () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didInitializeConfigurations', spy);
+      application.on('configurationsReady', spy);
 
       await application.start();
 
@@ -446,7 +446,7 @@ describe('Application tests', () => {
     it('should emit the didInitializeProviders event with the service providers', async () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didInitializeProviders', spy);
+      application.on('providersReady', spy);
 
       await application.start();
 
@@ -490,7 +490,7 @@ describe('Application tests', () => {
     it('should emit the didInitializeKernel event with the service providers', async () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didInitializeKernel', spy);
+      application.on('kernelReady', spy);
 
       await application.start();
 
@@ -501,7 +501,7 @@ describe('Application tests', () => {
     it('should emit the didStart event', async () => {
       const spy = vi.fn();
       const application = new Application();
-      application.on('didStart', spy);
+      application.on('applicationReady', spy);
 
       await application.start();
 
