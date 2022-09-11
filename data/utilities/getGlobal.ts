@@ -20,5 +20,9 @@ export const getGlobal = (): GlobalThis => {
     return self;
   }
 
+  if (typeof globalThis !== 'undefined') {
+    return globalThis as GlobalThis;
+  }
+
   throw new Error(`Unable to find global object`);
 };

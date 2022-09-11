@@ -39,7 +39,8 @@ export class Application
     return Object.values(this._providers);
   }
 
-  constructor(configuration?: Partial<Micra.ApplicationConfiguration>) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(configuration?: Partial<Micra.ApplicationConfiguration<any>>) {
     super();
 
     if (configuration) {
@@ -95,10 +96,9 @@ export class Application
   }
 
   async initializeProviders(
-    serviceProviders: Record<
-      string,
-      Micra.ServiceProvider | Static<Micra.ServiceProvider>
-    >,
+    serviceProviders:
+      | Record<string, Micra.ServiceProvider | Static<Micra.ServiceProvider>>
+      | Array<Micra.ServiceProvider | Static<Micra.ServiceProvider>>,
   ): Promise<void> {
     const providers: Micra.ServiceProvider[] = [];
     const serviceProvidersInstances = Object.entries(serviceProviders).reduce(
@@ -144,9 +144,7 @@ export class Application
       return (await this.kernel.run?.(this)) as unknown as Return;
     } catch (thrown) {
       const error = normalizeError(thrown);
-
-      this.emitSync('onError', normalizeError(thrown));
-
+      this.emitSync('error', error);
       throw error;
     }
   }
@@ -172,21 +170,21 @@ export class Application
 
     this.emit('willInitializeContainer');
     this.initializeContainer(this._configuration.container ?? ServiceContainer);
-    this.emit('didInitializeContainer', this.container);
+    this.emit('containerReady', this.container);
     this.emit('willInitializeEnvironments');
     await this.initializeEnvironment(this._configuration.environments ?? {});
-    this.emit('didInitializeEnvironments', this.environment);
+    this.emit('environmentsReady', this.environment);
     this.emit('willInitializeConfigurations');
     this.initializeConfigurations(
       this._configuration.configurations ?? ({} as Application.Configurations),
     );
-    this.emit('didInitializeConfigurations', this.configuration);
+    this.emit('configurationsReady', this.configuration);
     this.emit('willInitializeProviders');
     await this.initializeProviders(this._configuration.providers ?? {});
-    this.emit('didInitializeProviders', this.serviceProviders);
+    this.emit('providersReady', this.serviceProviders);
     this.emit('willInitializeKernel');
     await this.initializeKernel(this._configuration.kernel ?? {});
-    this.emit('didInitializeKernel', this.kernel);
-    this.emit('didStart');
+    this.emit('kernelReady', this.kernel);
+    this.emit('applicationReady');
   }
 }
