@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {Configuration} from '@micra/configuration';
 import {Static} from '@micra/core/utilities/Static';
 import {Environment} from '@micra/environment';
@@ -39,7 +40,6 @@ export class ApplicationSync
     return Object.values(this._providers);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(configuration?: Partial<Micra.ApplicationConfiguration<any>>) {
     super();
 
