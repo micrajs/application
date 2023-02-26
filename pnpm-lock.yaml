@@ -4,7 +4,7 @@ specifiers:
   '@commitlint/cli': ^16.2.3
   '@micra/commit-lint-config': next
   '@micra/configuration': next
-  '@micra/core': 0.1.0-next.21
+  '@micra/core': next
   '@micra/core-test-utils': next
   '@micra/environment': next
   '@micra/error': next
@@ -31,16 +31,16 @@ specifiers:
 dependencies:
   '@micra/configuration': 0.1.0-next.2
   '@micra/environment': 0.1.0-next.2
-  '@micra/error': 0.1.0-next.8
+  '@micra/error': 0.1.0-next.9
   '@micra/event-emitter': 0.1.0-next.3
   '@micra/service-container': 0.1.0-next.2
 
 devDependencies:
   '@commitlint/cli': 16.2.3
   '@micra/commit-lint-config': 0.1.0-next.1_@commitlint+cli@16.2.3
-  '@micra/core': 0.1.0-next.21
-  '@micra/core-test-utils': 0.1.0-next.5_feyfb4qg7mz33xgn73crubxjju
-  '@micra/eslint-config': 0.1.0-next.1_x34fspzfs5ybjuz2zwiau3vofm
+  '@micra/core': 0.1.0-next.23
+  '@micra/core-test-utils': 0.1.0-next.5_o5pcea2eejvcxet5vj6qwrmlna
+  '@micra/eslint-config': 0.1.0-next.2_x34fspzfs5ybjuz2zwiau3vofm
   '@micra/faker': 0.1.0-next.3
   '@micra/typescript-config': 0.1.0-next.1
   '@micra/vite-config': 0.1.0-next.5_73dyphtw7zlwjuxh5uj6lzrrdu
@@ -324,34 +324,34 @@ packages:
       '@micra/event-emitter': 0.1.0-next.3
     dev: false
 
-  /@micra/core-test-utils/0.1.0-next.5_feyfb4qg7mz33xgn73crubxjju:
+  /@micra/core-test-utils/0.1.0-next.5_o5pcea2eejvcxet5vj6qwrmlna:
     resolution: {integrity: sha512-8aLIU6nd3hxOgJ6beE+a16CnpPgsOGZwiiSZ51G4wPiOSEGJgAzc5whH5OPWKh/QSwQg0UFpHITuM9h6/qvReA==}
     peerDependencies:
       '@micra/core': next
       '@micra/faker': next
     dependencies:
-      '@micra/core': 0.1.0-next.21
+      '@micra/core': 0.1.0-next.23
       '@micra/faker': 0.1.0-next.3
       tinyspy: 0.3.2
     dev: true
 
-  /@micra/core/0.1.0-next.21:
-    resolution: {integrity: sha512-Jv6gvEBLb6h8SmQ84JtvARPoXknJSOKEObJVdcIZQCm/JaGqznAxMNPvBBaPQ9WE+IP/d6o59JLVZn5hwUVP0Q==}
+  /@micra/core/0.1.0-next.23:
+    resolution: {integrity: sha512-Gs7OKPszJCsx8Rb0c/OwUsV8h7cD+xZ6uA0CYqWvgWUGlYuJNWWtqqSxt6pqoKiSz4Vh8aFPNYOWPQeg9JArMA==}
     dev: true
 
   /@micra/environment/0.1.0-next.2:
     resolution: {integrity: sha512-V3zbuJMwUEjIculuzMivtSOkc/hiEpZE0TgkCTlIRs061QgDdwe+cHCUySfnn9zc6woOzrYhqmxPsew4hvKKQw==}
     dependencies:
-      '@micra/error': 0.1.0-next.8
+      '@micra/error': 0.1.0-next.9
       '@micra/event-emitter': 0.1.0-next.3
     dev: false
 
-  /@micra/error/0.1.0-next.8:
-    resolution: {integrity: sha512-iHeX+IhFlNuWcczXfeAJEYoVWG6cTARETB7+WNiDJIlWojLNnXUwmSK/Low7XaMzyNeEZdXE7AJtdMHZ9Ry8rQ==}
+  /@micra/error/0.1.0-next.9:
+    resolution: {integrity: sha512-Cx9naPBh2+jHtYEQqjFx3gdo/GHSK6ZBlHKjEfBuqEK/OEkvrtdw+FnJ0JLYAwxeRNHNW6TmBQQzPUcXSuaqDg==}
     dev: false
 
-  /@micra/eslint-config/0.1.0-next.1_x34fspzfs5ybjuz2zwiau3vofm:
-    resolution: {integrity: sha512-BGmzOMBfm4GduC3Ppy6chl7v0q4uB3I97/BmRq3hEiXrV6DoX9ndFx8akzlw4ISkQ3qRURATcg4CO3LAFMzhJw==}
+  /@micra/eslint-config/0.1.0-next.2_x34fspzfs5ybjuz2zwiau3vofm:
+    resolution: {integrity: sha512-qgpmCBB07GCandVELVtoCzqfuXI00o7YjbzTnnNto2oWbW+9ioUJQqiki+L/x+GBqz3oBD0vrXoZr7DHcXiysg==}
     peerDependencies:
       eslint: '>= 3'
       prettier: '>= 2.6.0'
@@ -359,6 +359,7 @@ packages:
     dependencies:
       '@typescript-eslint/eslint-plugin': 5.20.0_qhyndj2pafgujuttxulbfsc73e
       '@typescript-eslint/parser': 5.20.0_5wsz2tb7zzudmaqxfve53vbauu
+      concurrently: 7.1.0
       eslint: 8.14.0
       eslint-config-prettier: 8.5.0_eslint@8.14.0
       prettier: 2.6.2
@@ -378,7 +379,7 @@ packages:
   /@micra/service-container/0.1.0-next.2:
     resolution: {integrity: sha512-C/fNOwmJ8AD7ofC+QVgR3bMWs4rvH+13to4j1u+InzNfDssxo0LDCbJgkAC6nzO0YA3NIM+4l5d/5mlx0RetMw==}
     dependencies:
-      '@micra/error': 0.1.0-next.8
+      '@micra/error': 0.1.0-next.9
       '@micra/event-emitter': 0.1.0-next.3
     dev: false
 
@@ -1036,8 +1037,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
-      is-text-path: 1.0.1
       JSONStream: 1.3.5
+      is-text-path: 1.0.1
       lodash: 4.17.21
       meow: 8.1.2
       split2: 3.2.2

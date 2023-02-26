@@ -52,6 +52,12 @@ export class ApplicationSync
     globals: Micra.ApplicationConfiguration['globals'],
   ): void {
     this._globals = {...this._globals, ...globals};
+
+    for (const [key, value] of Object.entries(this._globals)) {
+      if (typeof value === 'function') {
+        (this._global as any)[key] = value(this);
+      }
+    }
   }
 
   private initializeContainer(
@@ -187,4 +193,10 @@ export class ApplicationSync
     this.emit('kernelReady', this.kernel);
     this.emit('applicationReady');
   }) as Micra.Application['start'];
+
+  terminate(): void {
+    this.emit('willTerminate');
+    this.kernel.terminate?.(this);
+    this.emit('terminated');
+  }
 }

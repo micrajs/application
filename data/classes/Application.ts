@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {Configuration} from '@micra/configuration';
 import {Static} from '@micra/core/utilities/Static';
 import {Environment} from '@micra/environment';
@@ -39,7 +40,6 @@ export class Application
     return Object.values(this._providers);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   constructor(configuration?: Partial<Micra.ApplicationConfiguration<any>>) {
     super();
 
@@ -52,6 +52,12 @@ export class Application
     globals: Micra.ApplicationConfiguration['globals'],
   ): void {
     this._globals = {...this._globals, ...globals};
+
+    for (const [key, value] of Object.entries(this._globals)) {
+      if (typeof value === 'function') {
+        (this._global as any)[key] = value(this);
+      }
+    }
   }
 
   private initializeContainer(
@@ -186,5 +192,11 @@ export class Application
     await this.initializeKernel(this._configuration.kernel ?? {});
     this.emit('kernelReady', this.kernel);
     this.emit('applicationReady');
+  }
+
+  terminate(): void {
+    this.emit('willTerminate');
+    this.kernel.terminate?.(this);
+    this.emit('terminated');
   }
 }
