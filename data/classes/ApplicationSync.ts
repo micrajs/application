@@ -59,7 +59,11 @@ export class ApplicationSync
       });
     }
 
-    this.initializeContainer(this._configuration.container ?? ServiceContainer);
+    this.initializeContainer(
+      this._configuration.container ??
+        this.parent?.container?.clone() ??
+        ServiceContainer,
+    );
     this._providers = this.parent?._providers ?? {};
     this.configuration =
       this.parent?.configuration.createScope() ?? new Configuration();
@@ -128,9 +132,11 @@ export class ApplicationSync
   }
 
   private initializeContainer(
-    container: Micra.ApplicationConfiguration['container'],
+    container:
+      | Micra.ApplicationConfiguration['container']
+      | Micra.ServiceContainer,
   ): void {
-    this.container = this.parent?.container?.clone() ?? new container();
+    this.container = getInstanceOf(container);
   }
 
   private initializeEnvironment(
@@ -235,7 +241,9 @@ export class ApplicationSync
     this.initializeGlobals(this._configuration.globals ?? {});
 
     this.emit('willInitializeContainer');
-    this.initializeContainer(this._configuration.container ?? ServiceContainer);
+    if (this._configuration.container) {
+      this.initializeContainer(this._configuration.container);
+    }
     this.emit('containerReady', this.container);
     this.emit('willInitializeEnvironments');
     this.initializeEnvironment(this._configuration.environments ?? {});
