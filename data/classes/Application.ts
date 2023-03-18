@@ -78,6 +78,7 @@ export class Application
         'bootConfiguration',
       ],
       provider: scope?.provider ?? ['register', 'boot'],
+      terminate: scope?.provider ?? ['terminate'],
     };
 
     if (this._configuration.autoRun === true) {
@@ -258,6 +259,9 @@ export class Application
   async terminate(): Promise<void> {
     this.emit('willTerminate');
     this.kernel.terminate?.(this);
+    for (const hook of this._scope.terminate) {
+      await this.runHook(hook, this.serviceProviders);
+    }
     this.emit('terminated');
   }
 

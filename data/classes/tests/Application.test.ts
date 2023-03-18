@@ -619,7 +619,7 @@ describe('Application tests', () => {
       });
 
       await application.start();
-      const scope = await application.createScope('mock');
+      const scope = application.createScope('mock');
       await scope.start();
 
       expect(providers.mocked.boot).toHaveBeenCalledWith(scope);
@@ -637,7 +637,7 @@ describe('Application tests', () => {
       });
 
       await application.start();
-      const scope = await application.createScope('mock');
+      const scope = application.createScope('mock');
       await scope.run();
 
       expect(kernel.boot).toHaveBeenCalledWith(scope);
@@ -659,7 +659,7 @@ describe('Application tests', () => {
           mock: {},
         },
       });
-      const scope = await application.createScope('mock');
+      const scope = application.createScope('mock');
       await scope.start();
 
       expect(providers.mocked.boot).toHaveBeenCalledWith(scope);
@@ -677,7 +677,7 @@ describe('Application tests', () => {
       };
 
       await application.start();
-      const scope = await application.createScope('mock', hooks);
+      const scope = application.createScope('mock', hooks);
       await scope.start({
         providers: {
           mocked,
@@ -686,6 +686,52 @@ describe('Application tests', () => {
 
       expect(mocked.willStart).toHaveBeenCalledWith(scope);
       expect(mocked.didStart).toHaveBeenCalledWith(scope);
+    });
+  });
+
+  describe('terminate tests', () => {
+    it('terminates the kernel when terminating an application', async () => {
+      const application = new Application();
+      const kernel = {terminate: vi.fn()};
+
+      await application.start({
+        kernel,
+      });
+
+      await application.terminate();
+
+      expect(kernel.terminate).toHaveBeenCalledTimes(1);
+    });
+
+    it('triggers the providers terminate hook', async () => {
+      const application = new Application();
+      const mocked = {
+        terminate: vi.fn(),
+      };
+
+      await application.start({
+        providers: {
+          mocked,
+        },
+      });
+      await application.terminate();
+
+      expect(mocked.terminate).toHaveBeenCalledTimes(1);
+    });
+
+    it('terminates the kernel when terminating a scope', async () => {
+      const application = new Application();
+      const kernel = {terminate: vi.fn()};
+
+      await application.start();
+      const scope = application.createScope('mock');
+      await scope.start({
+        kernel,
+      });
+
+      await scope.terminate();
+
+      expect(kernel.terminate).toHaveBeenCalledTimes(1);
     });
   });
 });

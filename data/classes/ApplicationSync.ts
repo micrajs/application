@@ -77,6 +77,7 @@ export class ApplicationSync
         'bootConfiguration',
       ],
       provider: scope?.provider ?? ['register', 'boot'],
+      terminate: scope?.terminate ?? ['terminate'],
     };
 
     if (this._configuration.autoRun === true) {
@@ -257,6 +258,9 @@ export class ApplicationSync
   terminate = ((): void => {
     this.emit('willTerminate');
     this.kernel.terminate?.(this);
+    for (const hook of this._scope.terminate) {
+      this.runHook(hook, this.serviceProviders);
+    }
     this.emit('terminated');
   }) as Micra.Application['terminate'];
 

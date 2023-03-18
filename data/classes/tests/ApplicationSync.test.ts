@@ -688,4 +688,50 @@ describe('Application tests', () => {
       expect(mocked.didStart).toHaveBeenCalledWith(scope);
     });
   });
+
+  describe('terminate tests', () => {
+    it('terminates the kernel when terminating an application', () => {
+      const application = new Application();
+      const kernel = {terminate: vi.fn()};
+
+      application.start({
+        kernel,
+      });
+
+      application.terminate();
+
+      expect(kernel.terminate).toHaveBeenCalledTimes(1);
+    });
+
+    it('triggers the providers terminate hook', () => {
+      const application = new Application();
+      const mocked = {
+        terminate: vi.fn(),
+      };
+
+      application.start({
+        providers: {
+          mocked,
+        },
+      });
+      application.terminate();
+
+      expect(mocked.terminate).toHaveBeenCalledTimes(1);
+    });
+
+    it('terminates the kernel when terminating a scope', () => {
+      const application = new Application();
+      const kernel = {terminate: vi.fn()};
+
+      application.start();
+      const scope = application.createScope('mock');
+      scope.start({
+        kernel,
+      });
+
+      scope.terminate();
+
+      expect(kernel.terminate).toHaveBeenCalledTimes(1);
+    });
+  });
 });
