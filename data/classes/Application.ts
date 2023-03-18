@@ -83,7 +83,7 @@ export class Application
         'bootConfiguration',
       ],
       provider: scope?.provider ?? ['register', 'boot'],
-      terminate: scope?.provider ?? ['terminate'],
+      terminate: scope?.terminate ?? ['terminate'],
     };
 
     if (this._configuration.autoRun === true) {
