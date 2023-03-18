@@ -60,6 +60,7 @@ export class Application
       });
     }
 
+    this.initializeContainer(this._configuration.container ?? ServiceContainer);
     this._providers = this.parent?._providers ?? {};
     this.configuration =
       this.parent?.configuration.createScope() ?? new Configuration();
