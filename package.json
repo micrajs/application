@@ -1,6 +1,6 @@
 {
   "name": "@micra/application",
-  "version": "0.1.0-next.8",
+  "version": "0.1.0-next.9",
   "description": "Micra's isomorphic application class",
   "repository": {
     "type": "git",
