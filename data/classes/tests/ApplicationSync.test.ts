@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-function */
 import {MockEnvironment} from '@micra/core-test-utils/environment';
 import {MockKernel} from '@micra/core-test-utils/kernel';
 import {MockServiceContainer} from '@micra/core-test-utils/service-container';
