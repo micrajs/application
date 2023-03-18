@@ -21,39 +21,104 @@ export class ApplicationSync
     config?: Micra.Config;
     app?: Micra.Application;
   } = getGlobal();
+  private _scope: Micra.ApplicationScopeOptions;
   private _configuration: Partial<Micra.ApplicationConfiguration> = {};
-  private _providers: Record<string, Micra.ServiceProvider> = {};
+  private _providers: Record<string, Micra.ServiceProvider>;
   private _hasStarted = false;
-  private _globals: Micra.Globals = {
+  globals: Micra.Globals = {
     app: false,
     config: true,
     env: true,
     use: true,
   };
 
-  configuration: Configuration = new Configuration();
+  configuration: Configuration;
   container!: Micra.ServiceContainer;
-  environment: Environment = new Environment();
+  environment: Environment;
   kernel!: Micra.Kernel;
+  private parent?: ApplicationSync;
 
   get serviceProviders(): Micra.ServiceProvider[] {
     return Object.values(this._providers);
   }
 
-  constructor(configuration?: Partial<Micra.ApplicationConfiguration<any>>) {
+  constructor(
+    configuration?: Partial<Micra.ApplicationConfiguration<any>>,
+    scope?: Partial<Micra.ApplicationScopeOptions>,
+    parent?: ApplicationSync,
+  ) {
     super();
 
     if (configuration) {
       this._configuration = configuration;
+    }
+    if (parent) {
+      Object.defineProperty(this, 'parent', {
+        value: parent,
+        enumerable: false,
+      });
+    }
+
+    this._providers = this.parent?._providers ?? {};
+    this.configuration =
+      this.parent?.configuration.createScope() ?? new Configuration();
+    this.environment =
+      this.parent?.environment.createScope() ?? new Environment();
+
+    this._scope = {
+      name: scope?.name ?? 'global',
+      global: scope?.global ?? ['registerGlobal', 'bootGlobal'],
+      environment: scope?.environment ?? [
+        'registerEnvironment',
+        'bootEnvironment',
+      ],
+      configuration: scope?.configuration ?? [
+        'registerConfiguration',
+        'bootConfiguration',
+      ],
+      provider: scope?.provider ?? ['register', 'boot'],
+    };
+
+    if (this._configuration.autoRun === true) {
+      this.run();
+    }
+  }
+
+  private runHook(
+    hook: keyof Micra.ServiceProvider,
+    providers: Micra.ServiceProvider[],
+  ): void {
+    for (const provider of providers) {
+      provider[hook]?.(this);
     }
   }
 
   private initializeGlobals(
     globals: Micra.ApplicationConfiguration['globals'],
   ): void {
-    this._globals = {...this._globals, ...globals};
+    this.globals = {...this.globals, ...globals};
 
-    for (const [key, value] of Object.entries(this._globals)) {
+    for (const hook of this._scope.global) {
+      this.runHook(hook, this.serviceProviders);
+    }
+
+    if (this.globals.use === true && !this._global.use) {
+      this._global.use = createUseHelper(this);
+    }
+
+    if (this.globals.env === true && !this._global.env) {
+      this._global.env = createEnvHelper(this);
+    }
+
+    if (this.globals.config === true && !this._global.config) {
+      this._global.config = createConfigHelper(this);
+    }
+
+    if (this.globals.app === true && !this._global.app) {
+      this._global.app = this;
+    }
+
+    for (const [key, value] of Object.entries(this.globals)) {
       if (typeof value === 'function') {
         (this._global as any)[key] = value(this);
       }
@@ -63,34 +128,26 @@ export class ApplicationSync
   private initializeContainer(
     container: Micra.ApplicationConfiguration['container'],
   ): void {
-    if (this._globals.use && !this._global.use) {
-      this._global.use = createUseHelper(this);
-    }
-
-    this.container = new container();
+    this.container = this.parent?.container?.clone() ?? new container();
   }
 
   private initializeEnvironment(
     environments: Micra.ApplicationConfiguration['environments'],
   ): void {
-    if (this._globals.env && !this._global.env) {
-      this._global.env = createEnvHelper(this);
-    }
-
     for (const environment of Object.values(environments)) {
       this.environment.addSources(getInstanceOf(environment));
     }
 
     this.environment.initSync();
+
+    for (const hook of this._scope.environment) {
+      this.runHook(hook, this.serviceProviders);
+    }
   }
 
   private initializeConfigurations(
     configurations: Micra.ApplicationConfiguration['configurations'],
   ): void {
-    if (this._globals.config && !this._global.config) {
-      this._global.config = createConfigHelper(this);
-    }
-
     Object.entries(configurations).forEach(([key, value]) => {
       this.configuration.set(
         key as keyof Application.Configurations,
@@ -99,13 +156,17 @@ export class ApplicationSync
         ) as Application.Configurations[keyof Application.Configurations],
       );
     });
+
+    for (const hook of this._scope.configuration) {
+      this.runHook(hook, this.serviceProviders);
+    }
   }
 
-  initializeProviders = ((
+  private instantiateProviders(
     serviceProviders:
       | Record<string, Micra.ServiceProvider | Static<Micra.ServiceProvider>>
       | Array<Micra.ServiceProvider | Static<Micra.ServiceProvider>>,
-  ): void => {
+  ): Micra.ServiceProvider[] {
     const providers: Micra.ServiceProvider[] = [];
     const serviceProvidersInstances = Object.entries(serviceProviders).reduce(
       (instances, [key, provider]) => {
@@ -116,20 +177,20 @@ export class ApplicationSync
       },
       {} as Record<string, Micra.ServiceProvider>,
     );
-
-    for (const provider of providers) {
-      if (provider.register) {
-        provider.register(this);
-      }
-    }
-
-    for (const provider of providers) {
-      if (provider.boot) {
-        provider.boot(this);
-      }
-    }
-
     this._providers = {...this._providers, ...serviceProvidersInstances};
+    return providers;
+  }
+
+  initializeProviders = ((
+    serviceProviders:
+      | Record<string, Micra.ServiceProvider | Static<Micra.ServiceProvider>>
+      | Array<Micra.ServiceProvider | Static<Micra.ServiceProvider>>,
+  ): void => {
+    const providers = this.instantiateProviders(serviceProviders);
+
+    for (const hook of this._scope.provider) {
+      this.runHook(hook, providers);
+    }
   }) as Micra.Application['initializeProviders'];
 
   private initializeKernel(
@@ -168,11 +229,8 @@ export class ApplicationSync
       this._configuration = Object.assign(this._configuration, configuration);
     }
 
+    this.instantiateProviders(this._configuration.providers ?? {});
     this.initializeGlobals(this._configuration.globals ?? {});
-
-    if (this._globals.app && !this._global.app) {
-      this._global.app = this;
-    }
 
     this.emit('willInitializeContainer');
     this.initializeContainer(this._configuration.container ?? ServiceContainer);
@@ -186,7 +244,9 @@ export class ApplicationSync
     );
     this.emit('configurationsReady', this.configuration);
     this.emit('willInitializeProviders');
-    this.initializeProviders(this._configuration.providers ?? {});
+    for (const hook of this._scope.provider) {
+      this.runHook(hook, this.serviceProviders);
+    }
     this.emit('providersReady', this.serviceProviders);
     this.emit('willInitializeKernel');
     this.initializeKernel(this._configuration.kernel ?? {});
@@ -194,9 +254,23 @@ export class ApplicationSync
     this.emit('applicationReady');
   }) as Micra.Application['start'];
 
-  terminate(): void {
+  terminate = ((): void => {
     this.emit('willTerminate');
     this.kernel.terminate?.(this);
     this.emit('terminated');
+  }) as Micra.Application['terminate'];
+
+  createScope(
+    name: string,
+    options?: Partial<Omit<Micra.ApplicationScopeOptions, 'name'>>,
+  ): Micra.Application {
+    const configurations = this._configuration.scopes?.[name] ?? {};
+    const app = new ApplicationSync(configurations, {name, ...options}, this);
+
+    if (configurations.autoRun === true) {
+      app.run();
+    }
+
+    return app;
   }
 }

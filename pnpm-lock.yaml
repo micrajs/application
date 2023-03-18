@@ -29,8 +29,8 @@ specifiers:
   vitest: ^0.9.4
 
 dependencies:
-  '@micra/configuration': 0.1.0-next.2
-  '@micra/environment': 0.1.0-next.2
+  '@micra/configuration': 0.1.0-next.3
+  '@micra/environment': 0.1.0-next.4
   '@micra/error': 0.1.0-next.9
   '@micra/event-emitter': 0.1.0-next.3
   '@micra/service-container': 0.1.0-next.2
@@ -38,8 +38,8 @@ dependencies:
 devDependencies:
   '@commitlint/cli': 16.2.3
   '@micra/commit-lint-config': 0.1.0-next.1_@commitlint+cli@16.2.3
-  '@micra/core': 0.1.0-next.23
-  '@micra/core-test-utils': 0.1.0-next.5_o5pcea2eejvcxet5vj6qwrmlna
+  '@micra/core': 0.1.0-next.26
+  '@micra/core-test-utils': 0.1.0-next.5_ouvuwk7fwv3d4cuep4tcczdq7i
   '@micra/eslint-config': 0.1.0-next.2_x34fspzfs5ybjuz2zwiau3vofm
   '@micra/faker': 0.1.0-next.3
   '@micra/typescript-config': 0.1.0-next.1
@@ -318,29 +318,29 @@ packages:
       '@commitlint/config-conventional': 16.2.1
     dev: true
 
-  /@micra/configuration/0.1.0-next.2:
-    resolution: {integrity: sha512-cjn0TaDG8Z7sW/uPNIE4GjJARe0JgM6xMJe6sY79nZKn2vpaOAMAJulPZiMBciAKdFzVMYkOSlM4Ei1Y7ung0g==}
+  /@micra/configuration/0.1.0-next.3:
+    resolution: {integrity: sha512-BXmpuvHf2Gm+SwAP627e5cnmfIPS5xW1WO48fJjCewF7YxMfL411GJRo75cWgIgI9aiI2Ut5N0u6IGN/fPGnGg==}
     dependencies:
       '@micra/event-emitter': 0.1.0-next.3
     dev: false
 
-  /@micra/core-test-utils/0.1.0-next.5_o5pcea2eejvcxet5vj6qwrmlna:
+  /@micra/core-test-utils/0.1.0-next.5_ouvuwk7fwv3d4cuep4tcczdq7i:
     resolution: {integrity: sha512-8aLIU6nd3hxOgJ6beE+a16CnpPgsOGZwiiSZ51G4wPiOSEGJgAzc5whH5OPWKh/QSwQg0UFpHITuM9h6/qvReA==}
     peerDependencies:
       '@micra/core': next
       '@micra/faker': next
     dependencies:
-      '@micra/core': 0.1.0-next.23
+      '@micra/core': 0.1.0-next.26
       '@micra/faker': 0.1.0-next.3
       tinyspy: 0.3.2
     dev: true
 
-  /@micra/core/0.1.0-next.23:
-    resolution: {integrity: sha512-Gs7OKPszJCsx8Rb0c/OwUsV8h7cD+xZ6uA0CYqWvgWUGlYuJNWWtqqSxt6pqoKiSz4Vh8aFPNYOWPQeg9JArMA==}
+  /@micra/core/0.1.0-next.26:
+    resolution: {integrity: sha512-3id+W4KXft0yPb5K2mB7p4DtKjCC6qLY1d9mGP1r6u2NLJzEiN1uBQLk+3FqiCiLnuTXmZvgAJRsSByxVo1U9g==}
     dev: true
 
-  /@micra/environment/0.1.0-next.2:
-    resolution: {integrity: sha512-V3zbuJMwUEjIculuzMivtSOkc/hiEpZE0TgkCTlIRs061QgDdwe+cHCUySfnn9zc6woOzrYhqmxPsew4hvKKQw==}
+  /@micra/environment/0.1.0-next.4:
+    resolution: {integrity: sha512-ArA6jT0tpJzHypv2vFyejguRlWQ418POJlo0ZvpMe3tOciHiPQd9R/AYpp4yFG+yAO5omP152UEuyJX13BZb+w==}
     dependencies:
       '@micra/error': 0.1.0-next.9
       '@micra/event-emitter': 0.1.0-next.3

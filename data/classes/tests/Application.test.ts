@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-empty-function */
 import {MockEnvironment} from '@micra/core-test-utils/environment';
 import {MockAsyncKernel} from '@micra/core-test-utils/kernel';
 import {MockServiceContainer} from '@micra/core-test-utils/service-container';
@@ -443,6 +443,102 @@ describe('Application tests', () => {
       );
     });
 
+    it("should call the provider's registerGlobal", async () => {
+      const application = new Application();
+      const registerGlobal = vi.fn();
+
+      await application.start({
+        providers: {
+          mocked: {
+            registerGlobal,
+          },
+        },
+      });
+
+      expect(registerGlobal).toHaveBeenCalledTimes(1);
+      expect(registerGlobal).toHaveBeenCalledWith(application);
+    });
+
+    it("should call the provider's bootGlobal", async () => {
+      const application = new Application();
+      const bootGlobal = vi.fn();
+
+      await application.start({
+        providers: {
+          mocked: {
+            bootGlobal,
+          },
+        },
+      });
+
+      expect(bootGlobal).toHaveBeenCalledTimes(1);
+      expect(bootGlobal).toHaveBeenCalledWith(application);
+    });
+
+    it("should call the provider's registerEnvironment", async () => {
+      const application = new Application();
+      const registerEnvironment = vi.fn();
+
+      await application.start({
+        providers: {
+          mocked: {
+            registerEnvironment,
+          },
+        },
+      });
+
+      expect(registerEnvironment).toHaveBeenCalledTimes(1);
+      expect(registerEnvironment).toHaveBeenCalledWith(application);
+    });
+
+    it("should call the provider's bootEnvironment", async () => {
+      const application = new Application();
+      const bootEnvironment = vi.fn();
+
+      await application.start({
+        providers: {
+          mocked: {
+            bootEnvironment,
+          },
+        },
+      });
+
+      expect(bootEnvironment).toHaveBeenCalledTimes(1);
+      expect(bootEnvironment).toHaveBeenCalledWith(application);
+    });
+
+    it("should call the provider's registerConfiguration", async () => {
+      const application = new Application();
+      const registerConfiguration = vi.fn();
+
+      await application.start({
+        providers: {
+          mocked: {
+            registerConfiguration,
+          },
+        },
+      });
+
+      expect(registerConfiguration).toHaveBeenCalledTimes(1);
+      expect(registerConfiguration).toHaveBeenCalledWith(application);
+    });
+
+    it("should call the provider's bootConfiguration", async () => {
+      const application = new Application();
+      const bootConfiguration = vi.fn();
+
+      await application.start({
+        providers: {
+          mocked: {
+            bootConfiguration,
+          },
+        },
+      });
+
+      expect(bootConfiguration).toHaveBeenCalledTimes(1);
+      expect(bootConfiguration).toHaveBeenCalledWith(application);
+    });
+
     it('should emit the didInitializeProviders event with the service providers', async () => {
       const spy = vi.fn();
       const application = new Application();
@@ -506,6 +602,90 @@ describe('Application tests', () => {
       await application.start();
 
       expect(spy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('scope tests', () => {
+    it('creates an application scope with custom providers', async () => {
+      const providers = {
+        mocked: new MockAsyncServiceProvider(),
+      };
+      const application = new Application({
+        scopes: {
+          mock: {
+            providers,
+          },
+        },
+      });
+
+      await application.start();
+      const scope = await application.createScope('mock');
+      await scope.start();
+
+      expect(providers.mocked.boot).toHaveBeenCalledWith(scope);
+      expect(providers.mocked.register).toHaveBeenCalledWith(scope);
+    });
+
+    it('creates an application scope with custom kernel', async () => {
+      const kernel = new MockAsyncKernel();
+      const application = new Application({
+        scopes: {
+          mock: {
+            kernel,
+          },
+        },
+      });
+
+      await application.start();
+      const scope = await application.createScope('mock');
+      await scope.run();
+
+      expect(kernel.boot).toHaveBeenCalledWith(scope);
+      expect(kernel.run).toHaveBeenCalledWith(scope);
+    });
+
+    it('inherits providers from the global scope', async () => {
+      const providers = {
+        mocked: {
+          register: vi.fn(),
+          boot: vi.fn(),
+        },
+      };
+      const application = new Application();
+
+      await application.start({
+        providers,
+        scopes: {
+          mock: {},
+        },
+      });
+      const scope = await application.createScope('mock');
+      await scope.start();
+
+      expect(providers.mocked.boot).toHaveBeenCalledWith(scope);
+      expect(providers.mocked.register).toHaveBeenCalledWith(scope);
+    });
+
+    it('calls custom hooks on a scope', async () => {
+      const application = new Application();
+      const hooks: any = {
+        provider: ['willStart', 'didStart'],
+      };
+      const mocked = {
+        willStart: vi.fn(),
+        didStart: vi.fn(),
+      };
+
+      await application.start();
+      const scope = await application.createScope('mock', hooks);
+      await scope.start({
+        providers: {
+          mocked,
+        } as any,
+      });
+
+      expect(mocked.willStart).toHaveBeenCalledWith(scope);
+      expect(mocked.didStart).toHaveBeenCalledWith(scope);
     });
   });
 });
