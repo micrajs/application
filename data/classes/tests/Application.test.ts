@@ -606,7 +606,7 @@ describe('Application tests', () => {
   });
 
   describe('scope tests', () => {
-    it('creates an application scope with custom providers', async () => {
+    it('does not run parent hooks on scopes', async () => {
       const providers = {
         mocked: new MockAsyncServiceProvider(),
       };
@@ -619,7 +619,9 @@ describe('Application tests', () => {
       });
 
       await application.start();
-      const scope = application.createScope('mock');
+      const scope = application.createScope('mock', {
+        provider: ['register', 'boot'],
+      });
       await scope.start();
 
       expect(providers.mocked.boot).toHaveBeenCalledWith(scope);
@@ -659,7 +661,9 @@ describe('Application tests', () => {
           mock: {},
         },
       });
-      const scope = application.createScope('mock');
+      const scope = application.createScope('mock', {
+        provider: ['register', 'boot'],
+      });
       await scope.start();
 
       expect(providers.mocked.boot).toHaveBeenCalledWith(scope);

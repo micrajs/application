@@ -619,7 +619,9 @@ describe('Application tests', () => {
       });
 
       application.start();
-      const scope = application.createScope('mock');
+      const scope = application.createScope('mock', {
+        provider: ['register', 'boot'],
+      });
       scope.start();
 
       expect(providers.mocked.boot).toHaveBeenCalledWith(scope);
@@ -659,7 +661,9 @@ describe('Application tests', () => {
           mock: {},
         },
       });
-      const scope = application.createScope('mock');
+      const scope = application.createScope('mock', {
+        provider: ['register', 'boot'],
+      });
       scope.start();
 
       expect(providers.mocked.boot).toHaveBeenCalledWith(scope);

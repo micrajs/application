@@ -10,6 +10,7 @@ import {createEnvHelper} from '../utilities/createEnvHelper';
 import {createUseHelper} from '../utilities/createUseHelper';
 import {getGlobal} from '../utilities/getGlobal';
 import {getInstanceOf} from '../utilities/getInstanceOf';
+import {DEFAULT_SCOPE, GLOBAL_SCOPE} from '../constants';
 
 export class ApplicationSync
   extends EventEmitter<Micra.ApplicationEvents>
@@ -23,7 +24,7 @@ export class ApplicationSync
   } = getGlobal();
   private _scope: Micra.ApplicationScopeOptions;
   private _configuration: Partial<Micra.ApplicationConfiguration> = {};
-  private _providers: Record<string, Micra.ServiceProvider>;
+  private _providers: Record<string, Micra.ServiceProvider> = {};
   private _hasStarted = false;
   globals: Micra.Globals = {
     app: false,
@@ -39,7 +40,9 @@ export class ApplicationSync
   private parent?: ApplicationSync;
 
   get serviceProviders(): Micra.ServiceProvider[] {
-    return Object.values(this._providers);
+    return (this.parent?.serviceProviders ?? []).concat(
+      Object.values(this._providers),
+    );
   }
 
   constructor(
@@ -64,26 +67,22 @@ export class ApplicationSync
         this.parent?.container?.clone() ??
         ServiceContainer,
     );
-    this._providers = this.parent?._providers ?? {};
     this.configuration =
       this.parent?.configuration.createScope() ?? new Configuration();
     this.environment =
       this.parent?.environment.createScope() ?? new Environment();
 
-    this._scope = {
-      name: scope?.name ?? 'global',
-      global: scope?.global ?? ['registerGlobal', 'bootGlobal'],
-      environment: scope?.environment ?? [
-        'registerEnvironment',
-        'bootEnvironment',
-      ],
-      configuration: scope?.configuration ?? [
-        'registerConfiguration',
-        'bootConfiguration',
-      ],
-      provider: scope?.provider ?? ['register', 'boot'],
-      terminate: scope?.terminate ?? ['terminate'],
-    };
+    this._scope =
+      parent == null
+        ? GLOBAL_SCOPE
+        : {
+            name: scope?.name ?? DEFAULT_SCOPE.name,
+            global: scope?.global ?? DEFAULT_SCOPE.global,
+            environment: scope?.environment ?? DEFAULT_SCOPE.environment,
+            configuration: scope?.configuration ?? DEFAULT_SCOPE.configuration,
+            provider: scope?.provider ?? DEFAULT_SCOPE.provider,
+            terminate: scope?.terminate ?? DEFAULT_SCOPE.terminate,
+          };
 
     if (this._configuration.autoRun === true) {
       this.run();
