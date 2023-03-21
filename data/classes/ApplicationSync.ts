@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {Configuration} from '@micra/configuration';
-import {Static} from '@micra/core/utilities/Static';
+import type {MaybeInstanceOf} from '@micra/core/utilities/MaybeInstanceOf';
 import {Environment} from '@micra/environment';
-import {EventEmitter} from '@micra/event-emitter';
 import {normalizeError} from '@micra/error';
+import {EventEmitter} from '@micra/event-emitter';
 import {ServiceContainer} from '@micra/service-container';
+import {DEFAULT_SCOPE, GLOBAL_SCOPE} from '../constants';
 import {createConfigHelper} from '../utilities/createConfigHelper';
 import {createEnvHelper} from '../utilities/createEnvHelper';
 import {createUseHelper} from '../utilities/createUseHelper';
 import {getGlobal} from '../utilities/getGlobal';
 import {getInstanceOf} from '../utilities/getInstanceOf';
-import {DEFAULT_SCOPE, GLOBAL_SCOPE} from '../constants';
 
 export class ApplicationSync
   extends EventEmitter<Micra.ApplicationEvents>
@@ -131,9 +131,7 @@ export class ApplicationSync
   }
 
   private initializeContainer(
-    container:
-      | Micra.ApplicationConfiguration['container']
-      | Micra.ServiceContainer,
+    container: MaybeInstanceOf<Micra.ServiceContainer>,
   ): void {
     this.container = getInstanceOf(container);
   }
@@ -171,8 +169,8 @@ export class ApplicationSync
 
   private instantiateProviders(
     serviceProviders:
-      | Record<string, Micra.ServiceProvider | Static<Micra.ServiceProvider>>
-      | Array<Micra.ServiceProvider | Static<Micra.ServiceProvider>>,
+      | Record<string, MaybeInstanceOf<Micra.ServiceProvider>>
+      | Array<MaybeInstanceOf<Micra.ServiceProvider>>,
   ): Micra.ServiceProvider[] {
     const providers: Micra.ServiceProvider[] = [];
     const serviceProvidersInstances = Object.entries(serviceProviders).reduce(
@@ -190,8 +188,8 @@ export class ApplicationSync
 
   initializeProviders = ((
     serviceProviders:
-      | Record<string, Micra.ServiceProvider | Static<Micra.ServiceProvider>>
-      | Array<Micra.ServiceProvider | Static<Micra.ServiceProvider>>,
+      | Record<string, MaybeInstanceOf<Micra.ServiceProvider>>
+      | Array<MaybeInstanceOf<Micra.ServiceProvider>>,
   ): void => {
     const providers = this.instantiateProviders(serviceProviders);
 

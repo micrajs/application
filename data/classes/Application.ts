@@ -1,18 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {Configuration} from '@micra/configuration';
-import {Constructor} from '@micra/core/utilities/Constructor';
+import {MaybeInstanceOf} from '@micra/core/utilities/MaybeInstanceOf';
 import {Environment} from '@micra/environment';
-import {EventEmitter} from '@micra/event-emitter';
 import {normalizeError} from '@micra/error';
+import {EventEmitter} from '@micra/event-emitter';
 import {ServiceContainer} from '@micra/service-container';
+import {DEFAULT_SCOPE, GLOBAL_SCOPE} from '../constants';
 import {createConfigHelper} from '../utilities/createConfigHelper';
 import {createEnvHelper} from '../utilities/createEnvHelper';
 import {createUseHelper} from '../utilities/createUseHelper';
 import {getGlobal} from '../utilities/getGlobal';
 import {getInstanceOf} from '../utilities/getInstanceOf';
-import {DEFAULT_SCOPE, GLOBAL_SCOPE} from '../constants';
-
-type MaybeInstanceOf<T> = T | Constructor<T>;
 
 export class Application
   extends EventEmitter<Micra.ApplicationEvents>
@@ -135,9 +133,7 @@ export class Application
   }
 
   private initializeContainer(
-    container:
-      | Micra.ApplicationConfiguration['container']
-      | Micra.ServiceContainer,
+    container: MaybeInstanceOf<Micra.ServiceContainer>,
   ): void {
     this.container = getInstanceOf(container);
   }
