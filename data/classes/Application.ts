@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {Configuration} from '@micra/configuration';
-import {Static} from '@micra/core/utilities/Static';
+import {Constructor} from '@micra/core/utilities/Constructor';
 import {Environment} from '@micra/environment';
 import {EventEmitter} from '@micra/event-emitter';
 import {normalizeError} from '@micra/error';
@@ -11,6 +11,8 @@ import {createUseHelper} from '../utilities/createUseHelper';
 import {getGlobal} from '../utilities/getGlobal';
 import {getInstanceOf} from '../utilities/getInstanceOf';
 import {DEFAULT_SCOPE, GLOBAL_SCOPE} from '../constants';
+
+type MaybeInstanceOf<T> = T | Constructor<T>;
 
 export class Application
   extends EventEmitter<Micra.ApplicationEvents>
@@ -173,8 +175,8 @@ export class Application
 
   private instantiateProviders(
     serviceProviders:
-      | Record<string, Micra.ServiceProvider | Static<Micra.ServiceProvider>>
-      | Array<Micra.ServiceProvider | Static<Micra.ServiceProvider>>,
+      | Record<string, MaybeInstanceOf<Micra.ServiceProvider>>
+      | Array<MaybeInstanceOf<Micra.ServiceProvider>>,
   ): Micra.ServiceProvider[] {
     const providers: Micra.ServiceProvider[] = [];
     const serviceProvidersInstances = Object.entries(serviceProviders).reduce(
@@ -192,8 +194,8 @@ export class Application
 
   async initializeProviders(
     serviceProviders:
-      | Record<string, Micra.ServiceProvider | Static<Micra.ServiceProvider>>
-      | Array<Micra.ServiceProvider | Static<Micra.ServiceProvider>>,
+      | Record<string, MaybeInstanceOf<Micra.ServiceProvider>>
+      | Array<MaybeInstanceOf<Micra.ServiceProvider>>,
   ): Promise<void> {
     const providers = this.instantiateProviders(serviceProviders);
 
